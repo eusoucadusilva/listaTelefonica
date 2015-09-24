@@ -26,9 +26,9 @@
 		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope) {
 			$scope.app = "Lista Telefonica";
 			$scope.contatos = [
-				{nome: "Pedro", telefone: 111111111},
-				{nome: "Ana", telefone: 222222222},
-				{nome: "Maria", telefone: 333333333}
+				{nome: "Pedro", telefone: 111111111, cor: "yellow"},
+				{nome: "Ana", telefone: 222222222, cor: "blue"},
+				{nome: "Maria", telefone: 333333333, cor: "red"}
 			];
 			$scope.operadoras =[
 				{nome:"Vivo", codigo: 11, tipo: "Celular"},
@@ -57,18 +57,20 @@
 	<div ng-controller="listaTelefonicaCtrl">
 		<div class="jumbotron">
 			<h4>{{app}}</h4>
-			<table class="table">
+			<table class="table" ng-show="contatos.length > 0">
 				<tr>
 					<th></th>
-					<td>Nome</td>
-					<td>Telefone</td>
-					<td>Operadora</td>
+					<th>Nome</th>
+					<th>Telefone</th>
+					<th>Operadora</th>
+					<th></th>
 				</tr>
 				<tr ng-class="{'selecionado negrito': contato.selecionado}" ng-repeat="contato in contatos">
 					<td><input type="checkbox" ng-model="contato.selecionado" /></td>
 					<td>{{contato.nome}}</td>
 					<td>{{contato.telefone}}</td>
 					<td>{{contato.operadora.nome}}</td>										
+					<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
 				</tr>
 			</table>
 			<hr>
@@ -81,5 +83,6 @@
 			<button class="btn btn-danger btn-block" ng-disabled="!isContatoSelecionado(contatos)" ng-click="apagarContatos(contatos)">Apagar Contatos</button>
 		</div>
 	</div>
+	<div ng-include="'footer.html'"></div>
 </body>
 </html>
