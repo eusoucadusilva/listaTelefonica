@@ -1,5 +1,6 @@
 <html ng-app="listaTelefonica">
 <head>
+	<meta charset="UTF-8">
 	<title>Lista Telefonica</title>
 	<script src="lib/angular/angular.js"></script>
 	<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
@@ -73,14 +74,22 @@
 					<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
 				</tr>
 			</table>
-			<hr>
-			<input class="form-control" type="text" ng-model="contato.nome" placeholder="Nome" />
-			<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone" />			
-			<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
-				<option value="">Selecione uma operadora</option>
-			</select>
-			<button class="btn btn-primary btn-block" ng-disabled="!contato.nome || !contato.telefone" ng-click="adicionarContato(contato)">Adicionar Contato</button>
-			<button class="btn btn-danger btn-block" ng-disabled="!isContatoSelecionado(contatos)" ng-click="apagarContatos(contatos)">Apagar Contatos</button>
+			<hr>	
+			<form name="contatoForm">
+				<input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="Nome" ng-required="true"/>
+				<input class="form-control" type="text" ng-model="contato.telefone" name="telefone"placeholder="Telefone" ng-required="true"/>			
+				<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
+					<option value="">Selecione uma operadora</option>
+				</select>
+				<button class="btn btn-primary btn-block" ng-disabled="contatoForm.$invalid" ng-click="adicionarContato(contato)">Adicionar Contato</button>
+				<button class="btn btn-danger btn-block" ng-disabled="!isContatoSelecionado(contatos)" ng-click="apagarContatos(contatos)">Apagar Contatos</button>
+			</form>
+			<div ng-show="contatoForm.nome.$invalid && contatoForm.nome.$dirty" class="alert alert-danger">
+				Por favor, preencha o nome!
+			</div>
+			<div ng-show="contatoForm.telefone.$invalid && contatoForm.telefone.$dirty" class="alert alert-danger">
+				Por favor, preencha o telefone!
+			</div>
 		</div>
 	</div>
 	<div ng-include="'footer.html'"></div>
