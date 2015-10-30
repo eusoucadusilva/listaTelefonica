@@ -6,73 +6,9 @@
 	<script src="lib/angular/angular-messages.js"></script>
 	<script src="lib/angular/angular-locale_pt-br.js"></script>
 	<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
-	<style>
-		.selecionado {
-			background-color: yellow;
-		}
-		.negrito {
-			font-weight: bold;
-		}
-		.jumbotron {
-			width: 600px;			
-			text-align: center;
-			margin-top: 20px;			
-			margin-left: auto;
-			margin-right: auto;
-		}
-		.form-control {
-			margin-bottom: 5px;
-		}
-	</style>
-	<script>
-		var app = angular.module("listaTelefonica",["ngMessages"]);
-
-		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope, $filter, $http) {
-			$scope.app = "Lista Telefonica";
-			$scope.contatos = [];
-			$scope.operadoras =[];
-
-			var carregarContatos = function () {
-				$http.get("http://localhost:3000/contatos").success(function (data) {
-					$scope.contatos = data;
-				}).error(function (data, status){
-					$scope.message = "Aconteceu um problema: " + data;
-				});	
-			};
-			var carregarOperadoras = function () {
-				$http.get("http://localhost:3000/operadoras").success(function (data) {
-					$scope.operadoras = data;
-				}).error(function (data, status){
-					$scope.errors = data;
-				});	
-			};
-			$scope.adicionarContato = function (contato) {
-				contato.data =  new Date();
-				$http.post("http://localhost:3000/contatos", contato).success(function (data){
-					carregarContatos();
-				});
-
-				delete $scope.contato;
-				$scope.contatoForm.$setPristine();
-			};
-			$scope.apagarContatos = function (contatos) {
-				$scope.contatos = contatos.filter(function (contato) {
-					if (!contato.selecionado) return contato;
-				});
-			};
-			$scope.isContatoSelecionado = function (contatos) {
-				return contatos.some(function (contato) {
-					return contato.selecionado;
-				});
-			};
-			$scope.ordenarPor = function (campo) {
-				$scope.criterioDeOrdenacao = campo;
-				$scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
-			};
-			carregarOperadoras();
-			carregarContatos();
-		});
-	</script>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<script src="js/app.js"></script>
+	<script src="js/controllers/listaTelefonicaCtrl.js"></script>	
 </head>
 <body>
 	<div ng-controller="listaTelefonicaCtrl">
@@ -126,6 +62,6 @@
 			</div>
 		</div>
 	</div>
-	<div ng-include="'footer.html'"></div>
+	<div ng-include="'view/footer.html'"></div>
 </body>
 </html>
