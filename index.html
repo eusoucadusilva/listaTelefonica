@@ -21,7 +21,7 @@
 	<div ng-controller="listaTelefonicaCtrl">
 		<div class="jumbotron">
 			<h4>{{app}}</h4>
-			{{message}}
+			{{error}}
 			<input type="text" class="form-control" ng-model="criterioDeBusca" placeholder="O que você está buscando?" />
 			<table class="table" ng-show="contatos.length > 0">
 				<tr>
@@ -38,38 +38,40 @@
 					<td>{{contato.serial }}</td>
 					<td>{{contato.nome | name | ellipsis:12 }}</td>
 					<td>{{contato.telefone}}</td>
-					<td>{{contato.operadora.nome | lowercase }}</td>										
+					<td>{{contato.operadora.nome}}</td>										
 					<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
-					<td>{{contato.data | date: 'MMMM EEEE dd/mm/yyyy HH:mm'}}</td>
+					<td>{{contato.data| date:'dd-MM-yyyy'}}</td>
 				</tr>
 			</table>
 			<hr>	
 			<form name="contatoForm">
 				<input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="Nome" ng-required="true" ng-minlength="10"/>
-				<input class="form-control" type="text" ng-model="contato.telefone" name="telefone"placeholder="Telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">			
+
+				<input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
+
 				<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome + ' (' + (operadora.preco | currency) + ')' for operadora in operadoras | orderBy:'nome'">  
 					<option value="">Selecione uma operadora</option>
 				</select>
+
 				<button class="btn btn-primary btn-block" ng-disabled="contatoForm.$invalid" ng-click="adicionarContato(contato)">Adicionar Contato</button>
+
 				<button class="btn btn-danger btn-block" ng-disabled="!isContatoSelecionado(contatos)" ng-click="apagarContatos(contatos)">Apagar Contatos</button>
 			</form>
 
-			<div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
-				<div ng-message="required">
-					Por favor, preencha o nome!
-				</div>
-				<div ng-message="minlength">
-					O nome deve conter no minímo 10 caracteres.
-				</div>
+			<div ng-show="contatoForm.nome.$error.required && contatoForm.nome.$dirty" class="alert alert-danger">
+				Por favor, preencha o nome!
 			</div>
 
+			<div ng-show="contatoForm.nome.$error.minlength" class="alert alert-danger">
+				O nome deve conter no minímo 10 caracteres.
+			</div>			
+	
 			<div ng-show="contatoForm.telefone.$error.required && contatoForm.telefone.$dirty" class="alert alert-danger">
-				Por favor, preencha o telefone!
+					Por favor, preencha o telefone!
 			</div>
 			<div ng-show="contatoForm.telefone.$error.pattern" class="alert alert-danger">
 				O campo telefone deve ter o formato DDDDD-DDDD.
 			</div>
-		</div>
 	</div>
 	<div ng-include="'view/footer.html'"></div>
 </body>
