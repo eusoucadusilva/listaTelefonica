@@ -25,7 +25,7 @@
 		<div class="jumbotron">
 			<h4>{{app}}</h4>
 
-			<ui-alert title="Ops, aconteceu um problema!">
+			<ui-alert title="Ops, aconteceu um problema!" ng-hide="!(error)">
 				{{error}}
 			</ui-alert>
 
